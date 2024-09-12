@@ -1,0 +1,43 @@
+1.4 stretch 
+        return new Note(pitch, duration * factor);
+1.5 transpose 
+Documentation comment: 
+     * Returns a (new) note with the same duration, but transposed by the given interval.
+     * Rests are unaffected.
+     * @param interval the interval to transpose by
+     * @throws IllegalArgumentException if note is transposed beyond valid bounds [c0, g10]
+     * @return the transposed note
+
+Note result = null;
+if (midiValue == REST_PITCH)
+    result = this;
+else {
+    int newMidiValue = midiValue + interval;
+    if (newMidiValue == REST_PITCH)
+        newMidiValue++;
+    result = new Note(newMidiValue, duration);
+}
+return result;
+1.6 toString 
+1.7 
+    return pitch + " x " + duration;
+Other methods 
+/*
+ * @see java.lang.Object#equals(java.lang.Object)
+ */
+@Override
+public boolean equals(Object o) {
+    if (o instanceof Note) {
+        Note other = (Note) o;
+        return this.pitch.equals(other.pitch) &&
+                this.midiValue == other.midiValue &&
+                this.duration == other.duration;
+} 
+    return false;
+}
+@Override
+public int hashCode() {
+    long durHash = Double.doubleToLongBits(duration);
+    durHash = durHash ^ (durHash >> 32);
+    return (int) (durHash + midiValue);
+}
